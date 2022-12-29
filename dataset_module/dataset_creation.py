@@ -70,10 +70,11 @@ def rename_files(dir_path):
                 continue
 
 
-def create_data_with_labels(dataset_dir):
+def create_data_with_labels(dataset_dir, size=(180,180)):
     """
     Labelt de data (0 = Mondriaan, 1 = Picasso, 2 = Rubens, ...)
     Print welke files corrupted zijn. (bv. data\Picasso\\145.jpg --> FAILED)
+    Preprocessed ook de data (resized naar (180x180)
 
     Parameters:
         dataset_dir: A string containing the path to a directory containing
@@ -103,7 +104,8 @@ def create_data_with_labels(dataset_dir):
             else:
                 print(f"{str(image_path)} --> FAILED")
 
-    data = np.array([images])
+    data = np.array([preprocess_image(image.astype(np.float32), size)
+                     for image in images])
 
     labels = np.array(labels)
 
@@ -143,6 +145,5 @@ def preprocess_image(image, size: tuple):
     """
 
     image = cv2.resize(image, size)
-    image = image / 255.
 
     return image
