@@ -1,0 +1,25 @@
+body {
+    font-family: sans-serif;
+    font-size: 1.2em;
+    background: url("../images/Van Gogh - Starry Night (resized).jpg") no-repeat fixed center;
+    background-size: 100% 100%;
+}
+
+body #main {
+    background-color: whitesmoke;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 2.5em;
+    padding: 25px;
+    opacity: 0.9;
+    box-shadow: 2px 2px;
+}
+
+body div label {
+    font-size: 1.2em;
+}
+
+body div button {
+    margin-top: 1em;
+    font-size: 1em;
+}

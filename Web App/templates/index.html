@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div id="main">
+    <h1>Painter Predictor</h1>
+
+<form action="/predict" method="POST" enctype="multipart/form-data">
+    <label for="file-selector">Select a file:</label>
+    <input type="file" id="file-selector" name="file-selector" multiple>
+    <br>
+    <button type="submit" id="btn_predict">Check painter</button>
+</form>
+
+<div id="response"></div>
+
+<h1>{{ output }}</h1>
+{% endblock %}
+
+</div>
