@@ -73,31 +73,40 @@ def rename_files(dir_path):
 
 
 def remove_duplicates(directory):
-    # Set the directory containing the images
+    """
+    Functie om de duplicate images te verwijderen, jammergenoeg is deze methode niet perfect. Ik werk via de hashcode van
+    de images, het is mogelijk dat twee verschillende afbeeldingen dezelfde hash hebben. Toch kan het nuttig zijn om veel
+    duplicate images te identificeren en verwijderen.
+    """
+    try:
+        # Set the directory containing the images
 
-    # Create a list to store the hashes of the images
-    image_hashes = []
+        # Create a list to store the hashes of the images
+        image_hashes = []
 
-    # Iterate through the images in the directory
-    for filename in os.listdir(directory):
-        # Open the image
-        image = Image.open(os.path.join(directory, filename))
+        # Iterate through the images in the directory
+        for filename in os.listdir(directory):
+            # Open the image
+            image = Image.open(os.path.join(directory, filename))
 
-        # Calculate the hash of the image
-        image_hash = hashlib.sha256(image.tobytes()).hexdigest()
+            # Calculate the hash of the image
+            image_hash = hashlib.sha256(image.tobytes()).hexdigest()
 
-        # Check if the hash is already in the list
-        if image_hash in image_hashes:
-            # If the hash is already in the list, this is a duplicate image
-            # so we can delete it
-            os.remove(os.path.join(directory, filename))
-        else:
-            # If the hash is not in the list, this is a unique image
-            # so we add its hash to the list
-            image_hashes.append(image_hash)
+            # Check if the hash is already in the list
+            if image_hash in image_hashes:
+                # If the hash is already in the list, this is a duplicate image
+                # so we can delete it
+                os.remove(os.path.join(directory, filename))
+            else:
+                # If the hash is not in the list, this is a unique image
+                # so we add its hash to the list
+                image_hashes.append(image_hash)
 
-    # All duplicate images have been deleted
-    print('Done!')
+        # All duplicate images have been deleted
+        print(f"Duplicates in {directory} removed")
+
+    except:
+        pass
 
 
 def create_data_with_labels(dataset_dir, size=(180, 180)):
