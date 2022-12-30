@@ -109,6 +109,26 @@ def remove_duplicates(directory):
         pass
 
 
+def remove_corrupted_files(directory):
+    """
+    Functie om corrupte images of files die geen images zijn te verwijderen.
+    :param directory:
+    :return:
+    """
+
+    # Iterate through the images in the directory
+    for filename in os.listdir(directory):
+        # Try to open the image
+        try:
+            image = Image.open(os.path.join(directory, filename))
+        except Exception:
+            # If the image is corrupted, delete it
+            os.remove(os.path.join(directory, filename))
+
+    # All corrupted images have been deleted
+    print(f"Removed corrupted files from {directory}")
+
+
 def create_data_with_labels(dataset_dir, size=(180, 180)):
     """
     Labelt de data (0 = Mondriaan, 1 = Picasso, 2 = Rubens, ...)
