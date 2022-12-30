@@ -6,6 +6,8 @@ from pathlib import Path
 from PIL import Image
 import hashlib
 import random
+import time
+from IPython.display import display, Image, clear_output
 
 
 def make_subset(original_dir, new_base_dir, subset_name, start_index, end_index):
@@ -206,3 +208,18 @@ def preprocess_image(image, size: tuple):
     image = cv2.resize(image, size)
 
     return image
+
+
+def slideshow(directory, delay):
+    # Iterate through the images in the directory
+
+    for filename in os.listdir(directory):
+        # Clear previous output
+        clear_output()
+
+        # Display the image
+        display(Image(filename=os.path.join(directory, filename)))
+        time.sleep(delay)
+
+    # All images have been displayed
+    print('Done!')
