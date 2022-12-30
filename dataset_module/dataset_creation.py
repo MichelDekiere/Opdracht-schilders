@@ -3,6 +3,8 @@ import shutil
 import cv2
 import numpy as np
 from pathlib import Path
+from PIL import Image
+import hashlib
 import random
 
 
@@ -70,7 +72,35 @@ def rename_files(dir_path):
                 continue
 
 
-def create_data_with_labels(dataset_dir, size=(180,180)):
+def remove_duplicates(directory):
+    # Set the directory containing the images
+
+    # Create a list to store the hashes of the images
+    image_hashes = []
+
+    # Iterate through the images in the directory
+    for filename in os.listdir(directory):
+        # Open the image
+        image = Image.open(os.path.join(directory, filename))
+
+        # Calculate the hash of the image
+        image_hash = hashlib.sha256(image.tobytes()).hexdigest()
+
+        # Check if the hash is already in the list
+        if image_hash in image_hashes:
+            # If the hash is already in the list, this is a duplicate image
+            # so we can delete it
+            os.remove(os.path.join(directory, filename))
+        else:
+            # If the hash is not in the list, this is a unique image
+            # so we add its hash to the list
+            image_hashes.append(image_hash)
+
+    # All duplicate images have been deleted
+    print('Done!')
+
+
+def create_data_with_labels(dataset_dir, size=(180, 180)):
     """
     Labelt de data (0 = Mondriaan, 1 = Picasso, 2 = Rubens, ...)
     Print welke files corrupted zijn. (bv. data\Picasso\\145.jpg --> FAILED)
