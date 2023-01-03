@@ -38,7 +38,24 @@ ondernomen heb om dit project uit te voeren.
 		modellen opstel. Ik maakte gebruik van VGG16 en ResNet.
 		Wederom vindt u ook hier de bestanden van de getrainde modellen.
 
-5. Web App
+5. Verder experimenteren model
+
+    5.1 Interpretatie gekozen model
+        In deze notebook zal ik enkele technieken van hoofdstuk 9 in het boek gebruiken om inzicht te
+        verkrijgen naar de werking van mijn gekozen model door middel van plots van de tussentijdse activaties
+        van het model. Jammer genoeg ben ik hier niet in geslaagd om dit te doen voor mijn ResNet model,
+        dit is wel gelukt voor een CNN die ik zelf heb opgesteld.
+
+    5.2 undersampled strategie
+        create undersampled dataset.ipynb
+            In deze notebook creër ik een dataset met de undersampled strategie die ik dan zal gebruiken om
+            mijn gekozen model uit te testen met de undersampled strategie.
+
+        uittesten model.ipynb
+            In deze notebook test ik dan ook effectief het model uit met een undersampled strategie. Ik doe dit
+            zowel zonder als met data augmentation.
+
+6. Web App
 	In deze folder vindt u de code van mijn webapplicatie die ik gemaakt. Hierop kunt u een
 	afbeelding van een schilderij uploaden en mijn model zal dan voorspellen van welke schilder
 	dit schilderij geschilderd is.
