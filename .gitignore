@@ -6,3 +6,4 @@ datasets/
 *.keras
 paintings/
 undersampled_dataset/
+*.rar
