@@ -22,6 +22,7 @@ def make_subset(original_dir, new_base_dir, subset_name, start_index, end_index)
 
 def balance_dataset(dir_path):
     """
+    Balanceerd dataset via oversampled methode.
     Random images kopiëren tot dat alle klassen hetzelfde aantal images hebben en dus gebalanceerd zijn.
 
     Parameters:
@@ -42,6 +43,27 @@ def balance_dataset(dir_path):
                             f"{dir_path}/{cls}/{random.randint(0, 1000)}.{random_file}")  # random int voor naam zetten anders zou
                 # de image gewoon overgeschreven worden en zou het aantal niet omhoog gaan
                 # indien de random_int al bestaat wordt deze gewoon overgeschreven, dus geen nood aan error catch
+
+def balance_dataset_undersampled(dir_path):
+    """
+    Random images kopiëren tot dat alle klassen hetzelfde aantal images hebben en dus gebalanceerd zijn.
+
+    Parameters:
+        dataset_dir: A string containing the path to a directory containing
+        subdirectories to different classes.
+    """
+
+    sizes = [check_amount_of_images(f"{dir_path}/{painter}") for painter in os.listdir(dir_path)]
+    target_size = min(sizes)
+    smallest_class = os.listdir(dir_path)[sizes.index(target_size)]
+
+    for cls in os.listdir(dir_path):
+        if (cls != smallest_class):
+
+            while check_amount_of_images(f"{dir_path}/{cls}") > target_size:
+                random_file = random.choice(os.listdir(f"{dir_path}/{cls}"))
+                os.remove(f"{dir_path}/{cls}/{random_file}")
+
 
 
 def check_amount_of_images(dir_path):
