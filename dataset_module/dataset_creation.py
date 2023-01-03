@@ -45,6 +45,10 @@ def balance_dataset(dir_path):
 
 
 def check_amount_of_images(dir_path):
+    """
+    Functie die teruggeeft hoeveel images er in een opgegeven directory zitten.
+    """
+
     count = 0
     for path in os.listdir(dir_path):
         # check if current path is a file
