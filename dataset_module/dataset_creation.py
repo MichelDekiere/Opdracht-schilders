@@ -11,6 +11,10 @@ from IPython.display import display, Image, clear_output
 
 
 def make_subset(original_dir, new_base_dir, subset_name, start_index, end_index):
+    """
+    De functie komt uit het boek hoofdstuk 8, ik heb deze wel aangepast zodat deze niet alleen werkt voor de
+    cats & dogs.
+    """
     for category in os.listdir(original_dir):
         dir = new_base_dir / subset_name / category
         os.makedirs(dir)
@@ -26,17 +30,20 @@ def balance_dataset(dir_path):
     Random images kopiëren tot dat alle klassen hetzelfde aantal images hebben en dus gebalanceerd zijn.
 
     Parameters:
-        dataset_dir: A string containing the path to a directory containing
-        subdirectories to different classes.
+        dataset_dir: een string met het path naar de directory met de
+        subdirectories van de verschillende klassen.
     """
 
+    # sizes in een list steken, met behulp van een list comprehension
     sizes = [check_amount_of_images(f"{dir_path}/{painter}") for painter in os.listdir(dir_path)]
-    target_size = max(sizes)
-    biggest_class = os.listdir(dir_path)[sizes.index(target_size)]
+    target_size = max(sizes) # grootste size
+    biggest_class = os.listdir(dir_path)[sizes.index(target_size)] # klasse met grootste size ophalen
 
     for cls in os.listdir(dir_path):
         if (cls != biggest_class):
 
+            # zolang niet iedere klasse grootte gelijk is aan de grootte van de grootste klasse, verwijder
+            # willekeurige images
             while check_amount_of_images(f"{dir_path}/{cls}") < target_size:
                 random_file = random.choice(os.listdir(f"{dir_path}/{cls}"))
                 shutil.copy(f"{dir_path}/{cls}/{random_file}",
@@ -46,20 +53,24 @@ def balance_dataset(dir_path):
 
 def balance_dataset_undersampled(dir_path):
     """
-    Random images kopiëren tot dat alle klassen hetzelfde aantal images hebben en dus gebalanceerd zijn.
+    Balanceert dataset volgens undersampled methode.
+    Random images verwijderen tot dat alle klassen hetzelfde aantal images hebben en dus gebalanceerd zijn.
 
     Parameters:
-        dataset_dir: A string containing the path to a directory containing
-        subdirectories to different classes.
+        dir_path: een string met het path naar de directory met de
+        subdirectories van de verschillende klassen.
     """
 
+    # sizes in een list steken, met behulp van een list comprehension
     sizes = [check_amount_of_images(f"{dir_path}/{painter}") for painter in os.listdir(dir_path)]
-    target_size = min(sizes)
-    smallest_class = os.listdir(dir_path)[sizes.index(target_size)]
+    target_size = min(sizes) # kleinste size
+    smallest_class = os.listdir(dir_path)[sizes.index(target_size)] # klasse met kleinste size ophalen
 
     for cls in os.listdir(dir_path):
         if (cls != smallest_class):
 
+            # zolang niet iedere klasse grootte gelijk is aan de grootte van de kleinste klasse, verwijder
+            # willekeurige images
             while check_amount_of_images(f"{dir_path}/{cls}") > target_size:
                 random_file = random.choice(os.listdir(f"{dir_path}/{cls}"))
                 os.remove(f"{dir_path}/{cls}/{random_file}")
@@ -140,8 +151,6 @@ def remove_duplicates(directory):
 def remove_corrupted_files(directory):
     """
     Functie om corrupte images of files die geen images zijn te verwijderen.
-    :param directory:
-    :return:
     """
 
     # Iterate through the images in the directory
@@ -169,30 +178,27 @@ def create_data_with_labels(dataset_dir, size=(180, 180)):
     Returns:
         de data met de labels
     """
-    image_paths_per_label = collect_paths_to_files(dataset_dir)
+    image_paths_per_label = collect_paths_to_files(dataset_dir) # zie functie hieronder
 
     images = []
     labels = []
+
     for label, image_paths in image_paths_per_label.items():
         for image_path in image_paths:
 
-            # print(str(image_path))
-
-            img = cv2.imread(str(image_path))
+            img = cv2.imread(str(image_path)) # image inlezen
 
             if (img is not None):
-                # print(f"{i} {str(image_path)} --> succes")
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                images.append(img)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # image omzetten van BGR naar RGB
+                images.append(img) # deze RGB image toevoegen aan images list
 
                 # print(label)
                 labels.append(label)
-
             else:
                 print(f"{str(image_path)} --> FAILED")
 
     data = np.array([preprocess_image(image.astype(np.float32), size)
-                     for image in images])
+                     for image in images]) # alle images resizen, originele size in de image files blijft behouden
 
     labels = np.array(labels)
 
@@ -241,11 +247,11 @@ def slideshow(directory, delay):
 
     for filename in os.listdir(directory):
         # Clear previous output
-        clear_output()
+        clear_output() # anders zouden alle images onder elkaar getoond worden
 
         # Display the image
         display(Image(filename=os.path.join(directory, filename)))
         time.sleep(delay)
 
     # All images have been displayed
-    print('Done!')
+    print('Slideshow finished')
