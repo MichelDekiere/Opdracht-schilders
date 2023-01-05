@@ -6,7 +6,7 @@ class PaintingPredictor:
 
     def __init__(self, filename):
         self.filename = filename
-        self.model = load_model('final_model.keras')
+        self.model = load_model(filename)
 
     def predict_painter(self, input: np.array):
         labels = ["Mondriaan", "Picasso", "Rembrandt", "Rubens", "Van Gogh"]
@@ -16,4 +16,3 @@ class PaintingPredictor:
                                                    # digit/letter out of labels list
 
         return predicted_class  # voorspelde schilder returnen
-

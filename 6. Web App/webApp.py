@@ -21,7 +21,7 @@ def index():
 
 @app.route('/predict', methods=['POST', "GET"])
 def predict_chocolate():
-    pp = PaintingPredictor('final_model.keras')
+    pp = PaintingPredictor('ResNet_RMSprop_1e-6.keras')
 
     f = request.files['file-selector'].read()
 
